@@ -132,3 +132,13 @@ $\sigma_1, \hdots, \sigma_r$. They fill out the first $r$ entries of the diagona
 matrix, assuming $A$ has rank $r < min(m, n)$. Interestingly, the singular values
 are in fact, the square roots of eigenvalues of $A^{\top}A$.
 
+Let's interpret the SVD components one by one:
+
+## Left-singular matrix $U_{m\times m}$
+
+The columns of $U$ form the eigenvectors of $AA^{\top}$. We can see this clearly 
+below:
+
+\[AA^{\top} = (U\Sigma V^{\top})(V\Sigma^{\top}U^{\top}) = 
+U\Sigma \underbrace{V^{\top}V}_{=I_{n\times n}}\Sigma^{\top}U^{\top} =
+U\underbrace{\Sigma\Sigma^{\top}}_{\widetilde{\Sigma}}U^{\top} = U\widetilde{\Sigma}U^{\top}\]
