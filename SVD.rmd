@@ -1,0 +1,134 @@
+---
+title: "Singular Value Decomposition"
+author: Abhinav Anand, IIMB
+date: '`r format(Sys.time(), "%Y/%m/%d")`' #current date
+
+output:
+  pdf_document
+
+fontsize: 11pt
+documentclass: article
+geometry: margin = 1.5in
+
+linkcolor: blue
+urlcolor: red
+citecolor: magenta
+
+#citation_package: natbib
+#bibliography: Working_Paper.bib
+
+header-includes:
+   - \linespread{1.25}
+   - \usepackage{amsmath}
+
+---
+
+
+```{r setup, eval=T, message=FALSE, warning=T, include=FALSE}
+
+library(tidyverse)
+library(rmarkdown)
+library(knitr)
+
+knitr::opts_chunk$set(echo = T, 
+                      warning = T, 
+                      message = F, 
+                      eval = T, 
+                      include = T,
+                      fig.height=3.5, 
+                      fig.width=3.5,
+                      fig.align = 'center'
+                      )
+```
+
+# Eigendecomposition
+
+Before learning what is singular value decomposition, it will be useful to remind ourselves
+what is eigendecomposition.
+
+A vector $v_{n\times 1}$ is an eigenvector to a (square) matrix $A_{n\times n}$ if 
+applying it to $A$ (postmultiplying it) results in getting back the vector $v$, with 
+some scaling $\lambda_{1\times 1}$. 
+
+\[A_{n\times n}v_{n \times 1} = \lambda_{1\times 1} v_{n \times 1}\]
+
+Clearly, if $\lambda > 0$, the application of $v$ on $A$ produces an expansion 
+in the direction of $v$, else a contraction.
+
+A particularly simple way to geometrically interpret the eigenvector is that
+it is a *fixed direction* which is unchanged by the matrix $A$. 
+
+
+In general, a square matrix acts on some domain and transforms it into some 
+image. However (under some mild conditions) it turns out that for each such matrix $A$
+whose domain is the $n$ dimensional linear space $\mathbb{R}^n$, there are exactly
+$n$ fixed directions $v_1, v_2, \hdots, v_n$, or in other words, points on the 
+fixed directions $v_i$ remain fixed under the application of the matrix $A$ and can 
+only be sent 'outwards' (if $\lambda_i > 0$) corresponding to an 'expansion', or
+be sent 'inwards' (if $\lambda_i < 0$) corresponding to a 'contraction'. Even further,
+these fixed directions can form a basis for the domain and the image spaces. Note 
+that this is far from obvious. (Indeed why should there be any fixed directions?)
+
+Moreover, a simple transformation gives more insights about these eigenvectors:
+
+\[(A_{n\times n} - \lambda I_{n\times n})v_{n \times 1} = 0_{n \times 1}\]
+
+The above equation indicates that the eigenvector $v$ is in fact a resident of
+the *null space* (or *kernel*) of $A - \lambda I$.
+
+Continuing on with the definition of eigenvectors, we note that for a generic 
+$A_{n \times n}$ matrix, there are $n$ eigenvectors $v_1, \hdots, v_n$ which 
+form the basis of the domain $\mathbb{R}^n$. Thus for each such vector, applying 
+the definition, we get:
+
+\[Av_1 = \lambda_1 v_1\]
+\[Av_2 = \lambda_2 v_2\]
+\[\vdots\]
+\[Av_n = \lambda_n v_n\]
+
+Denoting the above operations in matrix form, we get
+
+\[A_{n\times n}[v1_{n\times 1}, v2_{n\times 1}, \hdots, vn_{n\times 1}] = 
+[v1_{n\times 1}, v2_{n\times 1}, \hdots, vn_{n\times 1}] 
+\begin{bmatrix} \lambda_{1} & & \\ & \ddots & \\ & & \lambda_{n} \end{bmatrix}\]
+
+Or in more compact notation
+
+\[A_{n\times n} Q_{n\times n} = \Lambda_{n\times n}Q_{n\times n}\]
+\[A = Q\Lambda Q^{-1}\]
+
+This is the famous eigendecomposition of a matrix into its eigenvector matrix $Q$
+and the diagonal eigenvalue matrix $\Lambda$.
+
+Another way to interpret the same equation is the following:
+
+\[\because A = Q\Lambda Q^{-1}\Rightarrow Q^{-1}AQ = \Lambda\]
+
+This, in plain language, denotes that any square matrix is decomposable into
+a diagonal matrix whose entries are its eigenvalues.
+
+The above can be refined even further if the matrix under consideration is 
+symmetric. In that case, the eigenvalues are real. Further, if the matrix is 
+positive definite the eigenvalues are positive, and if it is negative definite,
+the eigenvalues are negative. For the symmetric positive definite matrix, an 
+added feature is that the eigenvectors are orthogonal to each other, and in fact,
+the inverse of the eigenmatrix is simply its transpose, i.e., $Q^{-1} = Q^{\top}$.
+
+\[A = Q\Lambda Q^{\top}\]
+
+This will be our starting point for understanding the singular value decomposition.
+
+# Singular Value Decomposition (SVD)
+
+The best part about SVD is that it is applicable not just to square matrices,
+but in fact to *any* matrix $A_{m\times n}$:
+
+\[A_{m\times n} = \underbrace{U_{m\times m}}_{orthogonal} 
+\overbrace{\Sigma_{m\times n}}^{diagonal} \underbrace{V^{\top}_{n\times n}}_{orthogonal}\]
+
+The middle matrix $\Sigma_{m \times n}$ is a diagonal matrix whose entries
+are positive, and are called 'singular values' of A, denoted by 
+$\sigma_1, \hdots, \sigma_r$. They fill out the first $r$ entries of the diagonal 
+matrix, assuming $A$ has rank $r < min(m, n)$. Interestingly, the singular values
+are in fact, the square roots of eigenvalues of $A^{\top}A$.
+
