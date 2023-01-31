@@ -134,7 +134,7 @@ are in fact, the square roots of eigenvalues of $A^{\top}A$.
 
 Let's interpret the SVD components one by one:
 
-## Left-singular matrix $U_{m\times m}$
+## Left-singular matrix: $U_{m\times m}$
 
 The columns of $U$ form the eigenvectors of $AA^{\top}$. We can see this clearly 
 below:
@@ -142,3 +142,51 @@ below:
 \[AA^{\top} = (U\Sigma V^{\top})(V\Sigma^{\top}U^{\top}) = 
 U\Sigma \underbrace{V^{\top}V}_{=I_{n\times n}}\Sigma^{\top}U^{\top} =
 U\underbrace{\Sigma\Sigma^{\top}}_{\widetilde{\Sigma}}U^{\top} = U\widetilde{\Sigma}U^{\top}\]
+
+Or, in other words, $U$ must be the eigenmatrix for $AA^{\top}$. The matrix in 
+the middle: $\Sigma\Sigma^{\top}$ is $m\times m$ and carries the entries 
+$\sigma_1^2,\hdots, \sigma_r^2$ on the diagonal.
+
+## Right-singular matrix: $V^{\top}_{n\times n}$
+
+The columns of $V$ form the eigenvectors of $A^{\top}A$. 
+
+\[A^{\top}A = (U\Sigma V^{\top})^{\top}(U\Sigma V^{\top}) = 
+V\Sigma^{\top}\underbrace{U^{\top}U}_{=I_{m\times m}}\Sigma V^{\top} =
+V\underbrace{\Sigma^{\top}\Sigma}_{\widehat{\Sigma}} V^{\top} =
+V\widehat{\Sigma}V^{\top}\]
+
+Or, in other words, $V$ must be the eigenmatrix for $A^{\top}A$. The matrix in the middle: $\Sigma^{\top}\Sigma$ is $n\times n$ and carries the entries 
+$\sigma_1^2,\hdots, \sigma_r^2$ on the diagonal.
+
+
+
+## Relation with the four fundamental subspaces
+
+$U$ and $V$ give orthonormal bases for all the four fundamental subspaces of the 
+matrix $A$
+
+1. The first $r$ columns of $U$ form the basis of the *column space* of A
+2. The last $m-r$ columns of $U$ form the basis of the *left nullspace* of A
+3. The first $r$ columns of $V$ form the basis of the *row space* of A
+4. The last $m-r$ columns of $V$ form the basis of the *nullspace* of A
+
+## Operational interpretation
+
+Another way to look at the singular-value decomposition is in terms of the following
+operation
+
+\[A_{m\times n}(v_i)_{n\times 1} = \sigma_i (u_i)_{m\times 1}\]
+\[A_{m\times n}[(v_1)_{n\times 1},\hdots,(v_n)_{n\times 1}] = 
+[(u_1)_{m\times 1},\hdots,(u_m)_{n\times 1}] 
+\begin{bmatrix} \sigma_{1} & & \\ & \ddots & \\ & & \sigma_{n} \\
+ &  & & \ddots  \\ & & & & & 0
+\end{bmatrix} \]
+\[AV = U\Sigma\]
+
+# Applications: Principal components
+
+
+
+
+# Applications: Least squares regressions
